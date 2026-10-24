@@ -31,7 +31,7 @@ jobs:
         # ./configure --enable-zsh-debug --enable-zsh-mem-debug --enable-zsh-mem-warning --enable-zsh-secure-free --enable-zsh-heap-debug --enable-zsh-hash-debug --enable-pcre --enable-cap --enable-gdbm --enable-multibyte
         cat builddir/config.h
     - name: make
-      run: meson compile -C builddir --interactive
+      run: meson compile -C builddir/
     - name: test
       run: script -q /dev/null sh -c "meson test -C builddir/ --interactive"
     # - name: make check
