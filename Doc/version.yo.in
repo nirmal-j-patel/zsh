@@ -1,0 +1,10 @@
+
+IFDEF(INCWSLEVEL)(INCWSLEVEL())(STARTDEF())
+def(version)(0)(@VERSION@)
+def(date)(0)(@VERSION_DATE@)
+def(zshenv)(0)(@NSHENV@)
+def(zprofile)(0)(@NPROFILE@)
+def(zshrc)(0)(@NSHRC@)
+def(zlogin)(0)(@NLOGIN@)
+def(zlogout)(0)(@NLOGOUT@)
+IFDEF(DECWSLEVEL)(DECWSLEVEL())(ENDDEF())\
