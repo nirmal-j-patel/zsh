@@ -529,6 +529,7 @@ foreach mod_name, mod : modules_to_compile
             target_name,
             mod['sources'] + required_generated_headers,
             name_prefix: '',
+            name_suffix: 'so',
             c_args: '-DMODULE',
             include_directories: inc_dir,
             dependencies: dependencies,
