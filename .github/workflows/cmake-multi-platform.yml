@@ -29,7 +29,7 @@ jobs:
       run: |
         meson setup builddir
         # ./configure --enable-zsh-debug --enable-zsh-mem-debug --enable-zsh-mem-warning --enable-zsh-secure-free --enable-zsh-heap-debug --enable-zsh-hash-debug --enable-pcre --enable-cap --enable-gdbm --enable-multibyte
-        cat config.h
+        cat builddir/config.h
     - name: make
       run: meson compile -C builddir
     # - name: test
