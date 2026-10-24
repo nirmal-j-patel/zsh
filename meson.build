@@ -579,7 +579,12 @@ foreach struct : struct_members_to_check
             member,
             prefix: struct['prefix'],
         )
-        config_h_data.set(macro_name, struct_member_found)
+
+        if struct_member_found
+            config_h_data.set(macro_name, 1)
+        else
+            config_h_data.set(macro_name, false)
+        endif
     endforeach
 endforeach
 
