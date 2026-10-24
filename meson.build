@@ -11,8 +11,8 @@ fs = import('fs')
 cc = meson.get_compiler('c')
 
 m_dep = cc.find_library('m', required: true)
-dep_rt = cc.find_library('rt', required: true)
-dep_dl = cc.find_library('dl', required: true)
+dep_rt = cc.find_library('rt', required: false)
+dep_dl = cc.find_library('dl', required: false)
 
 dep_curses = dependency('curses', method: 'system', required: true)
 
