@@ -1,0 +1,38 @@
+name: C/C++ CI
+
+on:
+  push:
+    branches: [ "main", "meson_migration" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    #runs-on: ubuntu-latest
+
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+
+
+    steps:
+    - uses: actions/checkout@v4
+    #- run: sudo apt-get -y install yodl build-essential
+    - if: runner.os == 'macOS'
+      run: |
+        brew install ncurses pcre2 autoconf gdbm meson ninja
+
+    - name: configure
+      run: |
+        meson setup builddir
+        # ./configure --enable-zsh-debug --enable-zsh-mem-debug --enable-zsh-mem-warning --enable-zsh-secure-free --enable-zsh-heap-debug --enable-zsh-hash-debug --enable-pcre --enable-cap --enable-gdbm --enable-multibyte
+        cat config.h
+    - name: make
+      run: meson compile -C builddir
+    # - name: test
+    #   run: TERM=xterm make check
+    # - name: make check
+    #   run: TERM=xterm make check
