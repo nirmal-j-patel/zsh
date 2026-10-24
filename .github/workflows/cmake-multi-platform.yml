@@ -32,7 +32,7 @@ jobs:
         cat builddir/config.h
     - name: make
       run: meson compile -C builddir
-    # - name: test
-    #   run: TERM=xterm make check
+    - name: test
+      run: TERM=xterm meson test -C builddir/
     # - name: make check
     #   run: TERM=xterm make check
