@@ -20,8 +20,6 @@ foreach line : fs.read('iwidgets.list').splitlines()
     }
 endforeach
 
-# message(iwidgets)
-
 widgets_contents = '''/** widgets.list                               **/
 /** widget structures for the internal widgets **/
 

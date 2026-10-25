@@ -136,8 +136,6 @@ includefile(@modfile@)
 '''
 endforeach
 
-message(moddoc_list)
-
 configure_file(
     input: placeholder_template_file,
     output: 'modlist.yo',

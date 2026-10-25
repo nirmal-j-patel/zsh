@@ -2,7 +2,7 @@ project(
     'nsh',
     'c',
     version: '0.0.1',
-    meson_version: '>= 1.10.0',
+    meson_version: '>= 1.12.0',
     default_options: ['warning_level=0'],
 )
 
@@ -39,7 +39,9 @@ awk = find_program('awk', required: true)
 sh = find_program('sh', required: true)
 sed = find_program('sed', required: true)
 yodl = find_program('yodl', required: false)
+getconf_bin = find_program('getconf', required: false)
 
+# placeholder file that we will use with configure_file
 placeholder_template_file = files('build-aux/placeholder.in')[0]
 
 
@@ -107,9 +109,7 @@ libdir = prefix / get_option('libdir')
 
 moddir = libdir / tzsh_name / version
 
-# -----------------------------------------------------------------------------
 # runhelpdir & runhelp logic
-# -----------------------------------------------------------------------------
 runhelpdir_opt_val = get_option('runhelpdir')
 if runhelpdir_opt_val == 'auto'
     runhelpdir = datadir / tzsh_name / version / 'help'
@@ -122,9 +122,7 @@ else
     #   runhelp = 'runhelp'
 endif
 
-# -----------------------------------------------------------------------------
 # fndir logic
-# -----------------------------------------------------------------------------
 fndir_opt_val = get_option('fndir')
 if fndir_opt_val == 'auto'
     fndir = datadir / tzsh_name / version / 'functions'
@@ -132,9 +130,7 @@ else
     fndir = fndir_opt_val
 endif
 
-# -----------------------------------------------------------------------------
 # sitefndir & fixed_sitefndir logic
-# -----------------------------------------------------------------------------
 sitefndir_opt_val = get_option('site_fndir')
 if sitefndir_opt_val == 'auto'
     sitefndir = datadir / tzsh_name / 'site-functions'
@@ -149,23 +145,17 @@ if sitefndir != '/usr/local/share/nsh/site-functions' and sitefndir != 'no' and 
     endif
 endif
 
-# -----------------------------------------------------------------------------
 # function-subdirs logic
-# -----------------------------------------------------------------------------
 if get_option('function_subdirs')
     FUNCTIONS_SUBDIRS = 'yes'
 else
     FUNCTIONS_SUBDIRS = 'no'
 endif
 
-# -----------------------------------------------------------------------------
 # additional-fpath logic
-# -----------------------------------------------------------------------------
 additionalfpath = get_option('additional_fpath')
 
-# -----------------------------------------------------------------------------
 # scriptdir & sitescriptdir logic
-# -----------------------------------------------------------------------------
 scriptdir_opt = get_option('scriptdir')
 if scriptdir_opt == 'auto' or scriptdir_opt == 'yes'
     scriptdir = datadir / tzsh_name / version / 'scripts'
@@ -198,30 +188,13 @@ config_h_data.set_quoted(
 )
 
 # Multi-byte support is always enabled
-# disable unicode9 support
+# don't enable unicode9 support
 config_h_data.set('MULTIBYTE_SUPPORT', 1)
 
-# don't support these features
+# we don't support these features (at least yet)
 # musl-libc
 # static user lookup
-
-# Don't add ZSH_MEM or ZSH_SECURE_FREE support
-# Don't support USE_STACK_ALLOCATION
-# assume the following are never set or needed
-# TIME_H_SELECT_H_CONFLICTS
-# ZSH_NO_XOPEN
-# WINSIZE_IN_PTEM
-# HAVE_OSPEED
-# MUST_DEFINE_OSPEED
-# USE_LOCAL_H_ERRNO
-# SETENV_MANGLES_EQUAL
-# TGOTO_PROTO_MISSING
-# RLIM_T_IS_QUAD_T
-# RLIM_T_IS_LONG_LONG
-# HAVE_SUPERROOT
-# DLSYM_NEEDS_UNDERSCORE
-# direct struct and its members
-# ICONV_CONST
+# zsh mem support
 
 # the compiler has to support the following flags
 # TODO: remove code to deal with the absense of these features
@@ -267,6 +240,7 @@ if cc.has_function('ioctl', prefix: '#include <sys/ioctl.h>')
     config_h_data.set('IOCTL_IN_SYS_IOCTL', 1)
 endif
 
+# check presense of the following headers
 headers_to_check = [
     'bind/netdb.h',
     'curses.h',
@@ -343,6 +317,7 @@ foreach hdr : headers_to_check
     endif
 endforeach
 
+# check presence of the following functions
 functions_to_check = [
     '_mktemp',
     'arc4random_buf',
@@ -510,6 +485,7 @@ if cc.links(iconv_code, dependencies: dep_libiconv)
     config_h_data.set('ICONV_FROM_LIBICONV', 1)
 endif
 
+# check whether the following structs have specified members
 struct_members_to_check = [
     {
         'struct_name': 'stat',
@@ -610,6 +586,7 @@ config_h_data.set10(
     cc.has_header_symbol('stdio.h', 'fpurge'),
 )
 
+# check if the following macros are defined
 macros_to_check = [
     'RLIMIT_AIO_MEM',
     'RLIMIT_AIO_OPS',
@@ -746,7 +723,7 @@ config_h_data.set(
     cc.run(getcwd_calls_malloc_code).returncode() == 0,
 )
 
-getconf_bin = find_program('getconf', required: false)
+# determine default path variable
 default_path = '/bin:/usr/bin'
 
 if getconf_bin.found()
@@ -824,23 +801,23 @@ int main()
     char c;
     int fd;
     int pid, ret;
-    unlink("/tmp/fifo$$");
+    unlink("/tmp/fifo_test_nsh");
 #ifdef HAVE_MKFIFO
-    if(mkfifo("/tmp/fifo$$", 0600) < 0)
+    if(mkfifo("/tmp/fifo_test_nsh", 0600) < 0)
 #else
-    if(mknod("/tmp/fifo$$", 0010600, 0) < 0)
+    if(mknod("/tmp/fifo_test_nsh", 0010600, 0) < 0)
 #endif
 	return(1);
     pid = fork();
     if(pid < 0)
 	return(1);
     if(pid) {
-	fd = open("/tmp/fifo$$", O_RDONLY);
+	fd = open("/tmp/fifo_test_nsh", O_RDONLY);
 	return(fd < 0 || read(fd, &c, 1) != 1 || c != 'x');
     }
-    fd = open("/tmp/fifo$$", O_WRONLY);
+    fd = open("/tmp/fifo_test_nsh", O_WRONLY);
     ret = (fd < 0 || write(fd, "x", 1) < 1);
-    unlink("/tmp/fifo$$");
+    unlink("/tmp/fifo_test_nsh");
     return(ret);
 }
 '''
