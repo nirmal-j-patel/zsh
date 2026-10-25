@@ -502,7 +502,7 @@ libnsh_static = []
 foreach mod_name, mod : modules_to_compile
     target_name = mod_name.split('/')[-1]
 
-    # # all plugins depend on main zsh headers
+    # all plugins depend on main zsh headers
     required_generated_headers = main_shell_generated_headers
     required_generated_headers += generated_headers['zsh/main']
     required_generated_headers += generated_headers[mod_name]
@@ -515,7 +515,6 @@ foreach mod_name, mod : modules_to_compile
             dependencies: dependencies,
         )
     elif module_link_type_map[mod_name] == 'dynamic'
-        # required_generated_headers += generated_headers[mod_name]['mdh'] + generated_headers[mod_name]['epro'] + generated_headers[mod_name]['pro']
         nsh_dynamic_modules += shared_module(
             target_name,
             mod['sources'] + required_generated_headers,
