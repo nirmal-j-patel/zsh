@@ -801,23 +801,23 @@ int main()
     char c;
     int fd;
     int pid, ret;
-    unlink("/tmp/fifo_test_nsh");
+    unlink("/tmp/fifo$$");
 #ifdef HAVE_MKFIFO
-    if(mkfifo("/tmp/fifo_test_nsh", 0600) < 0)
+    if(mkfifo("/tmp/fifo$$", 0600) < 0)
 #else
-    if(mknod("/tmp/fifo_test_nsh", 0010600, 0) < 0)
+    if(mknod("/tmp/fifo$$", 0010600, 0) < 0)
 #endif
 	return(1);
     pid = fork();
     if(pid < 0)
 	return(1);
     if(pid) {
-	fd = open("/tmp/fifo_test_nsh", O_RDONLY);
+	fd = open("/tmp/fifo$$", O_RDONLY);
 	return(fd < 0 || read(fd, &c, 1) != 1 || c != 'x');
     }
-    fd = open("/tmp/fifo_test_nsh", O_WRONLY);
+    fd = open("/tmp/fifo$$", O_WRONLY);
     ret = (fd < 0 || write(fd, "x", 1) < 1);
-    unlink("/tmp/fifo_test_nsh");
+    unlink("/tmp/fifo$$");
     return(ret);
 }
 '''
