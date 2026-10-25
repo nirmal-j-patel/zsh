@@ -11,6 +11,7 @@ nsh_static_module_dependencies = []
 generated_headers = {}
 
 # include subdirectories and populate modules_to_compile
+# these have to be added first and zsh/main must be added last
 subdir('Builtins')
 subdir('Modules')
 subdir('Zle')
@@ -127,7 +128,6 @@ signames_c = custom_target(
         sh,
         meson.project_source_root() / 'build-aux' / 'generate_sig_headers.sh',
     ],
-    # depend_files: files('../build-aux/generate_sig_headers.sh'),
     env: {
         'CPP': cc.cmd_array(),
         'CPPFLAGS': '-E',
@@ -152,11 +152,9 @@ foreach mod_name, mod : modules_to_compile
     )
 
     if module_link_type_map[mod_name] == 'static'
-        # if escaped_mod_name != 'zshQsmain'
         zshxmods_h_contents += '#define LINKED_XMOD_@0@ 1\n'.format(
             escaped_mod_name,
         )
-        # endif
     elif module_link_type_map[mod_name] == 'dynamic'
         zshxmods_h_contents += f'''
 #ifdef DYNAMIC
@@ -181,8 +179,6 @@ main_shell_generated_headers = [
     nshterm_h,
     nshpaths_h,
     sigcount_h,
-    # bltinmods_list,
-    # zshxmods_h,
 ]
 
 modules_to_compile += {
@@ -190,7 +186,6 @@ modules_to_compile += {
         'name': 'zsh/main',
         'link': 'static',
         'load': true,
-        # 'builddir': 'Src',
         'functions': zsh_functions,
         'headers': [
             'config.h',
@@ -250,8 +245,6 @@ bltinmods_list_contents = ''
 
 # bltinmods.list: autoloaded modules
 foreach mod_name, mod : modules_to_compile
-    # mod_name = mod['name']
-
     if mod['load'] and module_link_type_map[mod_name] != 'disabled'
         if module_link_type_map[mod_name] == 'static'
             bltinmods_list_contents += f'/* linked-in known module `@mod_name@\' */\n'
@@ -320,8 +313,6 @@ endforeach
 
 # bltinmods.list: statically linked modules
 foreach mod_name, mod : modules_to_compile
-    # mod_name = mod['name']
-
     if module_link_type_map[mod_name] == 'static'
         escaped_mod_name = mod_name.replace('Q', 'Qq').replace('_', 'Qu').replace(
             '/',
@@ -358,8 +349,6 @@ configure_file(
 # Create .mdh file and compile modules
 ######################################
 foreach mod_name, mod : modules_to_compile
-    # generated_headers = []
-
     # come up with out mdh file name by using mdh_name property or inferring based on module name
     guessed_mdh_file_name = mod_name.split('/')[-1]
     if (guessed_mdh_file_name == 'main')
@@ -409,9 +398,11 @@ foreach mod_name, mod : modules_to_compile
         mdh_contents += '# include "' + moddephdr.split('/')[-1] + '.mdh"\n'
     endforeach
 
-    mdh_contents += '''# define IMPORTING_MODULE_zshQsmain 1
+    if mod_name != 'zsh/main'
+        mdh_contents += '''# define IMPORTING_MODULE_zshQsmain 1
 # include "zsh.mdh"
 '''
+    endif
 
     if mod['headers'].length() > 0
         mdh_contents += '''
