@@ -23,7 +23,10 @@ jobs:
     - if: runner.os == 'Linux'
       run: |
         sudo apt-get update
-        sudo apt-get install -y yodl build-essential libncurses-dev libpcre2-dev autoconf libgdbm-dev meson ninja-build
+        sudo apt-get install -y yodl build-essential libncurses-dev libpcre2-dev autoconf libgdbm-dev ninja-build python3-venv
+        python3 -m venv "$RUNNER_TEMP/meson-venv"
+        "$RUNNER_TEMP/meson-venv/bin/pip" install 'meson>=1.12.0'
+        echo "$RUNNER_TEMP/meson-venv/bin" >> "$GITHUB_PATH"
 
     - name: configure
       run: |
