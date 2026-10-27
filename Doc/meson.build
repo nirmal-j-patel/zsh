@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT OR Apache-2.0
+
 moddocsrc = files(
     'Zsh/mod_attr.yo',
     'Zsh/mod_cap.yo',

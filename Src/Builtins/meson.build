@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT OR Apache-2.0
+
 modules_to_compile += {
     'zsh/rlimits': {
         'link': 'either',

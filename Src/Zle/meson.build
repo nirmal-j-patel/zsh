@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT OR Apache-2.0
+
 iwidgets = []
 foreach line : fs.read('iwidgets.list').splitlines()
     if line.strip().startswith('#')

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT OR Apache-2.0
+
 errnames_c = custom_target(
     'errnames.c',
     output: 'errnames.c',
