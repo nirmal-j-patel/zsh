@@ -8,22 +8,22 @@ on:
 
 jobs:
   build:
-
-    #runs-on: ubuntu-latest
-
     runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
-        os: [macos-latest]
+        os: [macos-latest, ubuntu-latest]
 
 
     steps:
     - uses: actions/checkout@v4
-    #- run: sudo apt-get -y install yodl build-essential
     - if: runner.os == 'macOS'
       run: |
         brew install ncurses pcre2 autoconf gdbm meson ninja
+    - if: runner.os == 'Linux'
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y yodl build-essential libncurses-dev libpcre2-dev autoconf libgdbm-dev meson ninja-build
 
     - name: configure
       run: |
@@ -32,7 +32,11 @@ jobs:
         cat builddir/config.h
     - name: make
       run: meson compile -C builddir/
-    - name: test
+    - name: test (macOS)
+      if: runner.os == 'macOS'
       run: script -q /dev/null sh -c "meson test -C builddir/ --interactive"
+    - name: test (Linux)
+      if: runner.os == 'Linux'
+      run: script -q -c "meson test -C builddir/ --interactive" /dev/null
     # - name: make check
     #   run: TERM=xterm make check
