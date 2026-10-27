@@ -1,0 +1,416 @@
+option('pcre', type: 'feature', value: 'auto', description: 'Enable PCRE support')
+option('cap', type: 'feature', value: 'auto', description: 'Enable libcap support')
+option('gdbm', type: 'feature', value: 'auto', description: 'Enable GDBM support')
+option('nsl', type: 'feature', value: 'auto', description: 'Enable libnsl support')
+option(
+  'iconv',
+  type: 'feature',
+  value: 'auto',
+  description: 'Enable libiconv support',
+)
+option(
+  'maildir_support',
+  type: 'feature',
+  value: 'auto',
+  description: 'Enable maildir support',
+)
+
+option(
+  'use_suspended',
+  type: 'boolean',
+  value: true,
+  description: 'Use suspended instead of stopped',
+)
+
+option(
+  'default_histsize',
+  type: 'integer',
+  value: 30,
+  description: 'The default history buffer size in lines',
+)
+
+option(
+  'default_fcedit',
+  type: 'string',
+  value: 'vi',
+  description: 'The default editor for the fc builtin',
+)
+
+option(
+  'default_tmpprefix',
+  type: 'string',
+  value: '/tmp/nsh',
+  description: 'The default prefix for temporary files',
+)
+
+option(
+  'etcdir',
+  type: 'string',
+  value: '/etc',
+  description: 'The default directory for global nsh scripts (or "no" to disable all scripts)',
+)
+
+option(
+  'nshenv',
+  type: 'string',
+  value: 'auto',
+  description: 'The full pathname of the global nshenv script, "no" to disable, or "auto"',
+)
+
+option(
+  'nshrc',
+  type: 'string',
+  value: 'auto',
+  description: 'The full pathname of the global nshrc script, "no" to disable, or "auto"',
+)
+
+option(
+  'nprofile',
+  type: 'string',
+  value: 'auto',
+  description: 'The full pathname of the global nprofile script, "no" to disable, or "auto"',
+)
+
+option(
+  'nlogin',
+  type: 'string',
+  value: 'auto',
+  description: 'The full pathname of the global nlogin script, "no" to disable, or "auto"',
+)
+
+option(
+  'nlogout',
+  type: 'string',
+  value: 'auto',
+  description: 'The full pathname of the global nlogout script, "no" to disable, or "auto"',
+)
+
+option('locale', type: 'feature', value: 'enabled', description: 'Enable locale')
+
+option(
+  'runhelpdir',
+  type: 'string',
+  value: 'auto',
+  description: 'The directory in which to install run-help files ("no" to disable, "auto" for default)',
+)
+
+option(
+  'fndir',
+  type: 'string',
+  value: 'auto',
+  description: 'The directory in which to install functions ("auto" for default)',
+)
+
+option(
+  'site_fndir',
+  type: 'string',
+  value: 'auto',
+  description: 'Same for site functions (not version specific) ("auto" for default, "no" to disable)',
+)
+
+option(
+  'function_subdirs',
+  type: 'boolean',
+  value: false,
+  description: 'Install functions in subdirectories',
+)
+
+option(
+  'additional_fpath',
+  type: 'string',
+  value: '',
+  description: 'Add comma-separated directories to default function path',
+)
+
+option(
+  'scriptdir',
+  type: 'string',
+  value: 'auto',
+  description: 'the directory in which to install scripts',
+)
+option(
+  'site-scriptdir',
+  type: 'string',
+  value: 'auto',
+  description: 'same for site scripts (not version specific)',
+)
+
+option(
+  'custom-patchlevel',
+  type: 'string',
+  value: '',
+  description: 'set a custom ZSH_PATCHLEVEL value',
+)
+
+option(
+  'max_function_depth',
+  type: 'integer',
+  value: 500,
+  description: 'limit function depth',
+)
+
+option(
+  'default_readnullcmd',
+  type: 'string',
+  value: 'more',
+  description: 'Pager used when READNULLCMD is not set',
+)
+
+# option('dynamic_modules', type: 'feature', value: 'enabled', description: 'Enable dynamically linked modules')
+
+option('dynamic_modules', type: 'feature', value: 'enabled', description: 'Enable dynamically linked modules')
+
+option(
+  'default_module_type',
+  type: 'combo',
+  choices: ['dynamic', 'static'],
+  value: 'static',
+  description: 'Default link type for modules',
+)
+
+option(
+  'module_link_type_rlimits',
+  type: 'combo',
+  choices: ['auto', 'disabled', 'static', 'dynamic'],
+  value: 'auto',
+)
+option(
+  'module_link_type_sched',
+  type: 'combo',
+  choices: ['auto', 'disabled', 'static', 'dynamic'],
+  value: 'auto',
+)
+option(
+  'module_link_type_attr',
+  type: 'combo',
+  choices: ['auto', 'disabled', 'static', 'dynamic'],
+  value: 'auto',
+)
+option(
+  'module_link_type_cap',
+  type: 'combo',
+  choices: ['auto', 'disabled', 'static', 'dynamic'],
+  value: 'auto',
+)
+option(
+  'module_link_type_clone',
+  type: 'combo',
+  choices: ['auto', 'disabled', 'static', 'dynamic'],
+  value: 'auto',
+)
+option(
+  'module_link_type_curses',
+  type: 'combo',
+  choices: ['auto', 'disabled', 'static', 'dynamic'],
+  value: 'auto',
+)
+option(
+  'module_link_type_datetime',
+  type: 'combo',
+  choices: ['auto', 'disabled', 'static', 'dynamic'],
+  value: 'auto',
+)
+option(
+  'module_link_type_gdbm',
+  type: 'combo',
+  choices: ['auto', 'disabled', 'static', 'dynamic'],
+  value: 'auto',
+)
+option(
+  'module_link_type_example',
+  type: 'combo',
+  choices: ['auto', 'disabled', 'static', 'dynamic'],
+  value: 'auto',
+)
+option(
+  'module_link_type_files',
+  type: 'combo',
+  choices: ['auto', 'disabled', 'static', 'dynamic'],
+  value: 'auto',
+)
+option(
+  'module_link_type_hlgroup',
+  type: 'combo',
+  choices: ['auto', 'disabled', 'static', 'dynamic'],
+  value: 'auto',
+)
+option(
+  'module_link_type_ksh93',
+  type: 'combo',
+  choices: ['auto', 'disabled', 'static', 'dynamic'],
+  value: 'auto',
+)
+option(
+  'module_link_type_langinfo',
+  type: 'combo',
+  choices: ['auto', 'disabled', 'static', 'dynamic'],
+  value: 'auto',
+)
+option(
+  'module_link_type_mapfile',
+  type: 'combo',
+  choices: ['auto', 'disabled', 'static', 'dynamic'],
+  value: 'auto',
+)
+option(
+  'module_link_type_mathfunc',
+  type: 'combo',
+  choices: ['auto', 'disabled', 'static', 'dynamic'],
+  value: 'auto',
+)
+option(
+  'module_link_type_nearcolor',
+  type: 'combo',
+  choices: ['auto', 'disabled', 'static', 'dynamic'],
+  value: 'auto',
+)
+option(
+  'module_link_type_newuser',
+  type: 'combo',
+  choices: ['auto', 'disabled', 'static', 'dynamic'],
+  value: 'auto',
+)
+option(
+  'module_link_type_private',
+  type: 'combo',
+  choices: ['auto', 'disabled', 'static', 'dynamic'],
+  value: 'auto',
+)
+option(
+  'module_link_type_parameter',
+  type: 'combo',
+  choices: ['auto', 'disabled', 'static', 'dynamic'],
+  value: 'auto',
+)
+option(
+  'module_link_type_pcre',
+  type: 'combo',
+  choices: ['auto', 'disabled', 'static', 'dynamic'],
+  value: 'auto',
+)
+option(
+  'module_link_type_random',
+  type: 'combo',
+  choices: ['auto', 'disabled', 'static', 'dynamic'],
+  value: 'auto',
+)
+option(
+  'module_link_type_regex',
+  type: 'combo',
+  choices: ['auto', 'disabled', 'static', 'dynamic'],
+  value: 'auto',
+)
+option(
+  'module_link_type_socket',
+  type: 'combo',
+  choices: ['auto', 'disabled', 'static', 'dynamic'],
+  value: 'auto',
+)
+option(
+  'module_link_type_stat',
+  type: 'combo',
+  choices: ['auto', 'disabled', 'static', 'dynamic'],
+  value: 'auto',
+)
+option(
+  'module_link_type_system',
+  type: 'combo',
+  choices: ['auto', 'disabled', 'static', 'dynamic'],
+  value: 'auto',
+)
+option(
+  'module_link_type_tcp',
+  type: 'combo',
+  choices: ['auto', 'disabled', 'static', 'dynamic'],
+  value: 'auto',
+)
+option(
+  'module_link_type_termcap',
+  type: 'combo',
+  choices: ['auto', 'disabled', 'static', 'dynamic'],
+  value: 'auto',
+)
+option(
+  'module_link_type_terminfo',
+  type: 'combo',
+  choices: ['auto', 'disabled', 'static', 'dynamic'],
+  value: 'auto',
+)
+option(
+  'module_link_type_watch',
+  type: 'combo',
+  choices: ['auto', 'disabled', 'static', 'dynamic'],
+  value: 'auto',
+)
+option(
+  'module_link_type_zftp',
+  type: 'combo',
+  choices: ['auto', 'disabled', 'static', 'dynamic'],
+  value: 'auto',
+)
+option(
+  'module_link_type_zprof',
+  type: 'combo',
+  choices: ['auto', 'disabled', 'static', 'dynamic'],
+  value: 'auto',
+)
+option(
+  'module_link_type_zpty',
+  type: 'combo',
+  choices: ['auto', 'disabled', 'static', 'dynamic'],
+  value: 'auto',
+)
+option(
+  'module_link_type_zselect',
+  type: 'combo',
+  choices: ['auto', 'disabled', 'static', 'dynamic'],
+  value: 'auto',
+)
+option(
+  'module_link_type_zutil',
+  type: 'combo',
+  choices: ['auto', 'disabled', 'static', 'dynamic'],
+  value: 'auto',
+)
+option(
+  'module_link_type_compctl',
+  type: 'combo',
+  choices: ['auto', 'disabled', 'static', 'dynamic'],
+  value: 'auto',
+)
+option(
+  'module_link_type_complete',
+  type: 'combo',
+  choices: ['auto', 'disabled', 'static', 'dynamic'],
+  value: 'auto',
+)
+option(
+  'module_link_type_complist',
+  type: 'combo',
+  choices: ['auto', 'disabled', 'static', 'dynamic'],
+  value: 'auto',
+)
+option(
+  'module_link_type_computil',
+  type: 'combo',
+  choices: ['auto', 'disabled', 'static', 'dynamic'],
+  value: 'auto',
+)
+option(
+  'module_link_type_deltochar',
+  type: 'combo',
+  choices: ['auto', 'disabled', 'static', 'dynamic'],
+  value: 'auto',
+)
+option(
+  'module_link_type_zle',
+  type: 'combo',
+  choices: ['auto', 'disabled', 'static', 'dynamic'],
+  value: 'auto',
+)
+option(
+  'module_link_type_zleparameter',
+  type: 'combo',
+  choices: ['auto', 'disabled', 'static', 'dynamic'],
+  value: 'auto',
+)
