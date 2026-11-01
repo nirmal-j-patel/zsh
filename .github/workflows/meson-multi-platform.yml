@@ -39,5 +39,7 @@ jobs:
     - name: test (Linux)
       if: runner.os == 'Linux'
       run: script -q -c "meson test -C builddir/ --interactive" /dev/null
+    - name: rustfmt
+      run: meson compile rustfmt-check -C builddir/
     # - name: make check
     #   run: TERM=xterm make check
