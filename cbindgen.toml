@@ -1,0 +1,6 @@
+language = "C"
+
+include_guard = "__NSH_H__"
+
+[export]
+include = []

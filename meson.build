@@ -3,13 +3,14 @@
 
 project(
     'nsh',
-    'c',
+    ['c', 'rust'],
     version: '0.0.1',
     meson_version: '>= 1.12.0',
     default_options: ['warning_level=0'],
 )
 
 fs = import('fs')
+rustmod = import('rust')
 
 cc = meson.get_compiler('c')
 
