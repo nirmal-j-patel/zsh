@@ -3,13 +3,14 @@
 
 project(
     'nsh',
-    'c',
+    ['c', 'rust'],
     version: '0.0.1',
     meson_version: '>= 1.12.0',
-    default_options: ['warning_level=0'],
+    default_options: ['warning_level=0', 'rust_std=2024'],
 )
 
 fs = import('fs')
+rustmod = import('rust')
 
 cc = meson.get_compiler('c')
 
@@ -43,6 +44,7 @@ sh = find_program('sh', required: true)
 sed = find_program('sed', required: true)
 yodl = find_program('yodl', required: false)
 getconf_bin = find_program('getconf', required: false)
+rustfmt = find_program('rustfmt', required: false)
 
 # placeholder file that we will use with configure_file
 placeholder_template_file = files('build-aux/placeholder.in')[0]
@@ -873,6 +875,24 @@ else
     MOD_EXPORT = ''
     MOD_IMPORT_VARIABLE = ''
     MOD_IMPORT_FUNCTION = ''
+endif
+
+if rustfmt.found()
+  run_target('rustfmt',
+    command: [
+      rustfmt,
+      '--edition', '2024',
+      files('Src/lib.rs')
+    ]
+  )
+
+run_target('rustfmt-check',
+    command: [
+      rustfmt,
+      '--check',
+      files('Src/lib.rs'),
+    ]
+  )
 endif
 
 subdir('Completion')

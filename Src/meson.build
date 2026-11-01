@@ -1,3 +1,17 @@
+# rust files
+nsh_cbindgen_header = rustmod.cbindgen(
+    'lib.rs',
+    'nsh.h',
+    config: meson.project_source_root() / 'cbindgen.toml',
+)
+
+nsh_rust_lib = static_library(
+    'libnsh',
+    'lib.rs',
+    rust_abi: 'c',
+    rust_args: ['-C', 'panic=abort'],
+)
+
 # list of modules to compile
 modules_to_compile = {}
 
@@ -498,12 +512,13 @@ foreach mod_name, mod : modules_to_compile
     }
 endforeach
 
-libnsh_static = []
+libnsh_static = [nsh_rust_lib]
 foreach mod_name, mod : modules_to_compile
     target_name = mod_name.split('/')[-1]
 
     # all plugins depend on main zsh headers
     required_generated_headers = main_shell_generated_headers
+    required_generated_headers += nsh_cbindgen_header
     required_generated_headers += generated_headers['zsh/main']
     required_generated_headers += generated_headers[mod_name]
 

@@ -19,11 +19,11 @@ jobs:
     - uses: actions/checkout@v4
     - if: runner.os == 'macOS'
       run: |
-        brew install ncurses pcre2 autoconf gdbm meson ninja
+        brew install ncurses pcre2 autoconf gdbm meson ninja rust rustfmt cbindgen
     - if: runner.os == 'Linux'
       run: |
         sudo apt-get update
-        sudo apt-get install -y yodl build-essential libncurses-dev libpcre2-dev autoconf libgdbm-dev ninja-build python3-venv
+        sudo apt-get install -y yodl build-essential libncurses-dev libpcre2-dev autoconf libgdbm-dev ninja-build python3-venv rustc rustfmt cbindgen 
         python3 -m venv "$RUNNER_TEMP/meson-venv"
         "$RUNNER_TEMP/meson-venv/bin/pip" install 'meson>=1.12.0'
         echo "$RUNNER_TEMP/meson-venv/bin" >> "$GITHUB_PATH"
@@ -31,8 +31,6 @@ jobs:
     - name: configure
       run: |
         meson setup builddir
-        # ./configure --enable-zsh-debug --enable-zsh-mem-debug --enable-zsh-mem-warning --enable-zsh-secure-free --enable-zsh-heap-debug --enable-zsh-hash-debug --enable-pcre --enable-cap --enable-gdbm --enable-multibyte
-        cat builddir/config.h
     - name: make
       run: meson compile -C builddir/
     - name: test (macOS)
@@ -41,5 +39,7 @@ jobs:
     - name: test (Linux)
       if: runner.os == 'Linux'
       run: script -q -c "meson test -C builddir/ --interactive" /dev/null
+    - name: rustfmt
+      run: meson compile rustfmt-check -C builddir/
     # - name: make check
     #   run: TERM=xterm make check
