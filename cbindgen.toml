@@ -3,4 +3,9 @@ language = "C"
 include_guard = "__NSH_H__"
 
 [export]
-include = []
+include = [
+    "zlong",
+    "zulong",
+    "ZLONG_MAX",
+    "ZRANGE_MAX",
+]

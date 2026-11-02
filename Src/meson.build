@@ -204,6 +204,7 @@ modules_to_compile += {
         'headers': [
             'config.h',
             'zsh_system.h',
+            'nsh.h',
             'zsh.h',
             'sigcount.h',
             'signals.h',
