@@ -31,32 +31,6 @@
 #define minimum(a,b)  ((a) < (b) ? (a) : (b))
 #define maximum(a,b)  ((a) > (b) ? (a) : (b))
 
-/*
- * Our longest integer type:  will be a 64 bit either if long already is,
- * or if we found some alternative such as long long.
- */
-#ifdef ZSH_64_BIT_TYPE
-typedef ZSH_64_BIT_TYPE zlong;
-#if defined(ZLONG_IS_LONG_LONG) && defined(LLONG_MAX)
-#define ZLONG_MAX LLONG_MAX
-#else
-#ifdef ZLONG_IS_LONG_64
-#define ZLONG_MAX LONG_MAX
-#else
-/* umm... */
-#define  ZLONG_MAX ((zlong)9223372036854775807)
-#endif
-#endif
-#ifdef ZSH_64_BIT_UTYPE
-typedef ZSH_64_BIT_UTYPE zulong;
-#else
-typedef unsigned zlong zulong;
-#endif
-#else
-typedef long zlong;
-typedef unsigned long zulong;
-#define ZLONG_MAX LONG_MAX
-#endif
 
 /*
  * Work out how to define large integer constants that will fit

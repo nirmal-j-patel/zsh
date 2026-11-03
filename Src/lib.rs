@@ -11,6 +11,12 @@ fn panic(_info: &PanicInfo) -> ! {
 }
 
 #[unsafe(no_mangle)]
-pub extern "C" fn rust_eh_personality() {
+pub fn rust_eh_personality() {
 	// Empty stub
 }
+
+type zlong = i64;
+type zulong = u64;
+
+pub const ZLONG_MAX: zlong = i64::MAX;
+pub const ZRANGE_MAX: zlong = ZLONG_MAX;
